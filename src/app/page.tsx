@@ -1,113 +1,278 @@
-import Image from "next/image";
+"use client";
+import clsx from "clsx";
+import { Navbar } from "@/components/Navbar";
+import { Carousel } from "@/components/Carousel";
+import { Footer } from "@/components/Footer";
+import { Section } from "@/components/Section";
+import Card from "@/components/Card";
+import ArticleEntry from "@/components/ArticleEntry";
+import React, { CSSProperties, useState } from "react";
+
+export enum ColorTheme {
+  BlackAndWhite = "BlackAndWhite",
+}
+
+const websiteConfig = {
+  colorTheme: ColorTheme.BlackAndWhite,
+  navbarData: [
+    {
+      text: "首页",
+      href: "/",
+    },
+    {
+      text: "立即报名",
+      href: "/",
+    },
+    {
+      text: "了解畅想科技营",
+      href: "/",
+    },
+    {
+      text: "加入我们",
+      href: "/",
+    },
+  ],
+  carouselImages: [
+    {
+      src: "/c1.jpg",
+      width: 1620,
+      height: 1080,
+    },
+    {
+      src: "/c2.jpg",
+      width: 1620,
+      height: 1080,
+    },
+    {
+      src: "/c3.jpg",
+      width: 1620,
+      height: 1080,
+    },
+  ],
+  sectionOne: {
+    title: "让每一次飞行，都触摸天空的心跳。",
+    subTitle: "新乡人的航模俱乐部",
+    desc: "不论您是初学者还是资深飞手，我们都能为您带来前所未有的飞行体验，激发您对天空的无限想象。一起探索更广阔的天空，让梦想飞得更高",
+  },
+  sectionTwo: {
+    title: "畅想航模，孩子的天空也有大梦想。",
+    subTitle: "畅想航模启迪孩子们的梦想",
+    desc: "让孩子的梦想翱翔。我们的航模专为激发幼儿的想象与创造力设计，在飞行的乐趣中，孩子们学习科学原理，探索无限天空，种下成长的种子",
+  },
+  cardList: [
+    {
+      title: "第一季：星梯",
+      desc: "宇宙时空之旅：位置的世界",
+      buttonName: "去B站观看",
+      linkName: "去B站观看",
+      image: {
+        src: "/c1.jpg",
+        width: 1620,
+        height: 1080,
+      },
+    },
+    {
+      title: "第二季：星梯",
+      desc: "宇宙时空之旅：位置的世界",
+      buttonName: "去B站观看",
+      linkName: "去B站观看",
+      image: {
+        src: "/c2.jpg",
+        width: 1620,
+        height: 1080,
+      },
+    },
+    {
+      title: "第一季：星梯",
+      desc: "宇宙时空之旅：位置的世界",
+      buttonName: "去B站观看",
+      linkName: "去B站观看",
+      image: {
+        src: "/c3.jpg",
+        width: 1620,
+        height: 1080,
+      },
+    },
+    {
+      title: "第一季：星梯",
+      desc: "宇宙时空之旅：位置的世界",
+      buttonName: "去B站观看",
+      linkName: "去B站观看",
+      image: {
+        src: "/c3.jpg",
+        width: 1620,
+        height: 1080,
+      },
+    },
+    {
+      title: "第二季：星梯",
+      desc: "宇宙时空之旅：位置的世界",
+      buttonName: "去B站观看",
+      linkName: "去B站观看",
+      image: {
+        src: "/c2.jpg",
+        width: 1620,
+        height: 1080,
+      },
+    },
+    {
+      title: "第一季：星梯",
+      desc: "宇宙时空之旅：位置的世界",
+      buttonName: "去B站观看",
+      linkName: "去B站观看",
+      image: {
+        src: "/c3.jpg",
+        width: 1620,
+        height: 1080,
+      },
+    },
+  ],
+};
+
+export const ColorThemeConfig = {
+  [ColorTheme.BlackAndWhite]: {
+    sectionOneTheme: {
+      className: "bg-gradient-to-b from-black to-[#141414]",
+      titleAreaClassName: "text-white",
+      descClassName: "text-white",
+    },
+    sectionTwoTheme: {
+      className: "bg-gradient-to-b from-[#141414] to-[#282828]",
+      titleAreaClassName: "text-white",
+      descClassName: "text-white",
+    },
+    footerTheme: {
+      className: "bg-[#141414]",
+    },
+  },
+};
 
 export default function Home() {
+  const {
+    navbarData,
+    carouselImages,
+    sectionOne,
+    sectionTwo,
+    cardList,
+    colorTheme,
+  } = websiteConfig;
+  const { sectionOneTheme, sectionTwoTheme, footerTheme } =
+    ColorThemeConfig[colorTheme];
+  const [scrollY, setScrollY] = useState(0);
+
+  // 监听页面滚动事件
+  React.useEffect(() => {
+    const handleScroll = () => {
+      setScrollY(window.scrollY);
+    };
+    window.addEventListener("scroll", handleScroll);
+    // 组件卸载时移除事件监听
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+    };
+  }, []);
+
+  const navbarStyle = {
+    transition: "background-color 0.3s",
+    backgroundColor:
+      scrollY > 100 ? "white" : `rgba(255, 255, 255, ${scrollY / 100})`,
+    // 其他需要的样式可以在这里添加
+  };
+  const innerNavStyle = {
+    transition: "height 0.3s color 0.3s",
+    color:
+      scrollY > 100
+        ? "rgba(0,0,0)"
+        : `rgba(${(1 - scrollY / 100) * 255},${(1 - scrollY / 100) * 255},${(1 - scrollY / 100) * 255})`,
+    height:
+      scrollY > 100
+        ? "4rem"
+        : `${Number(7 - (scrollY / 100) * 3).toFixed(2)}rem`,
+  };
+  let layerStyle: CSSProperties = {
+    position: "fixed",
+    visibility:
+      typeof window !== "undefined" && scrollY > window.innerHeight
+        ? "visible"
+        : "hidden",
+    background:
+      typeof window !== "undefined" && scrollY > window.innerHeight
+        ? "black"
+        : "transpant",
+    bottom: 0,
+    left: 0,
+    right: 0,
+    top: 0,
+  };
+  let logoStyle =
+    scrollY > 100 ||
+    (typeof window !== "undefined" &&
+      window.matchMedia("(max-width:768px)").matches)
+      ? {
+          filter: "drop-shadow(180px 0 #6699cc)",
+          transform: "translateX(-100%)",
+        }
+      : {};
+
   return (
-    <main className="flex min-h-screen flex-col items-center justify-between p-24">
-      <div className="z-10 max-w-5xl w-full items-center justify-between font-mono text-sm lg:flex">
-        <p className="fixed left-0 top-0 flex w-full justify-center border-b border-gray-300 bg-gradient-to-b from-zinc-200 pb-6 pt-8 backdrop-blur-2xl dark:border-neutral-800 dark:bg-zinc-800/30 dark:from-inherit lg:static lg:w-auto  lg:rounded-xl lg:border lg:bg-gray-200 lg:p-4 lg:dark:bg-zinc-800/30">
-          Get started by editing&nbsp;
-          <code className="font-mono font-bold">src/app/page.tsx</code>
-        </p>
-        <div className="fixed bottom-0 left-0 flex h-48 w-full items-end justify-center bg-gradient-to-t from-white via-white dark:from-black dark:via-black lg:static lg:h-auto lg:w-auto lg:bg-none">
-          <a
-            className="pointer-events-none flex place-items-center gap-2 p-8 lg:pointer-events-auto lg:p-0"
-            href="https://vercel.com?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            By{" "}
-            <Image
-              src="/vercel.svg"
-              alt="Vercel Logo"
-              className="dark:invert"
-              width={100}
-              height={24}
-              priority
-            />
-          </a>
+    <>
+      <Navbar
+        menuItems={navbarData}
+        innerStyle={innerNavStyle}
+        style={navbarStyle}
+        className="lg:fixed lg:left-0 lg:right-0 lg:top-0 lg:z-20 lg:bg-transparent"
+        logoStyle={logoStyle}
+      ></Navbar>
+      <Carousel
+        className="h-[40vh] md:h-[80vh] lg:left-0 lg:right-0 lg:top-0 lg:h-[100vh]"
+        images={carouselImages}
+        interval={3000}
+      >
+        <div style={layerStyle}></div>
+      </Carousel>
+      <Section
+        className={clsx(
+          "relative z-10 overflow-hidden",
+          sectionOneTheme.className,
+        )}
+        titleAreaClassName={sectionOneTheme.titleAreaClassName}
+        descClassName={sectionOneTheme.descClassName}
+        title={sectionOne.title}
+        desc={sectionOne.desc}
+        // subTitle={sectionOne.subTitle}
+      >
+        <div className="mt-8 grid grid-cols-1 gap-10 md:grid-cols-2 lg:grid-cols-3">
+          {cardList.map((card) => {
+            return (
+              <Card
+                title={card.title}
+                desc={card.desc}
+                buttonName={card.buttonName}
+                image={card.image}
+              />
+            );
+          })}
         </div>
-      </div>
-
-      <div className="relative flex place-items-center before:absolute before:h-[300px] before:w-full sm:before:w-[480px] before:-translate-x-1/2 before:rounded-full before:bg-gradient-radial before:from-white before:to-transparent before:blur-2xl before:content-[''] after:absolute after:-z-20 after:h-[180px] after:w-full sm:after:w-[240px] after:translate-x-1/3 after:bg-gradient-conic after:from-sky-200 after:via-blue-200 after:blur-2xl after:content-[''] before:dark:bg-gradient-to-br before:dark:from-transparent before:dark:to-blue-700 before:dark:opacity-10 after:dark:from-sky-900 after:dark:via-[#0141ff] after:dark:opacity-40 before:lg:h-[360px] z-[-1]">
-        <Image
-          className="relative dark:drop-shadow-[0_0_0.3rem_#ffffff70] dark:invert"
-          src="/next.svg"
-          alt="Next.js Logo"
-          width={180}
-          height={37}
-          priority
-        />
-      </div>
-
-      <div className="mb-32 grid text-center lg:max-w-5xl lg:w-full lg:mb-0 lg:grid-cols-4 lg:text-left">
-        <a
-          href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className="group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2 className={`mb-3 text-2xl font-semibold`}>
-            Docs{" "}
-            <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
-              -&gt;
-            </span>
-          </h2>
-          <p className={`m-0 max-w-[30ch] text-sm opacity-50`}>
-            Find in-depth information about Next.js features and API.
-          </p>
-        </a>
-
-        <a
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          className="group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2 className={`mb-3 text-2xl font-semibold`}>
-            Learn{" "}
-            <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
-              -&gt;
-            </span>
-          </h2>
-          <p className={`m-0 max-w-[30ch] text-sm opacity-50`}>
-            Learn about Next.js in an interactive course with&nbsp;quizzes!
-          </p>
-        </a>
-
-        <a
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className="group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2 className={`mb-3 text-2xl font-semibold`}>
-            Templates{" "}
-            <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
-              -&gt;
-            </span>
-          </h2>
-          <p className={`m-0 max-w-[30ch] text-sm opacity-50`}>
-            Explore starter templates for Next.js.
-          </p>
-        </a>
-
-        <a
-          href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className="group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2 className={`mb-3 text-2xl font-semibold`}>
-            Deploy{" "}
-            <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
-              -&gt;
-            </span>
-          </h2>
-          <p className={`m-0 max-w-[30ch] text-sm opacity-50 text-balance`}>
-            Instantly deploy your Next.js site to a shareable URL with Vercel.
-          </p>
-        </a>
-      </div>
-    </main>
+      </Section>
+      <Section
+        className={clsx(
+          "relative z-10 lg:overflow-hidden",
+          sectionTwoTheme.className,
+        )}
+        titleAreaClassName={sectionTwoTheme.titleAreaClassName}
+        descClassName={sectionTwoTheme.descClassName}
+        title={sectionTwo.title}
+        desc={sectionTwo.desc}
+        // subTitle={sectionTwo.subTitle}
+      >
+        <ArticleEntry articles={cardList} switchTimer={3000}></ArticleEntry>
+      </Section>
+      <Footer
+        className={clsx(
+          "border-border-opacity-custom-15 -mb-10 border-t-8",
+          footerTheme.className,
+        )}
+      ></Footer>
+    </>
   );
 }
