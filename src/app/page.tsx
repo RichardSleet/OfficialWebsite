@@ -204,15 +204,17 @@ export default function Home() {
     right: 0,
     top: 0,
   };
-  let logoStyle =
-    scrollY > 100 ||
+  let logoStyle = {};
+  if (
     (typeof window !== "undefined" &&
-      window.matchMedia("(max-width:768px)").matches)
-      ? {
-          filter: "drop-shadow(180px 0 #6699cc)",
-          transform: "translateX(-100%)",
-        }
-      : {};
+      window.matchMedia("(max-width:768px)").matches) ||
+    scrollY > 100
+  ) {
+    logoStyle = {
+      filter: "drop-shadow(180px 0 #6699cc)",
+      transform: "translateX(-100%)"
+    };
+  }
 
   return (
     <>
@@ -265,7 +267,10 @@ export default function Home() {
         desc={sectionTwo.desc}
         // subTitle={sectionTwo.subTitle}
       >
-        <ArticleEntry articles={cardList as any} switchTimer={3000}></ArticleEntry>
+        <ArticleEntry
+          articles={cardList as any}
+          switchTimer={3000}
+        ></ArticleEntry>
       </Section>
       <Footer
         className={clsx(
