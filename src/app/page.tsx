@@ -8,7 +8,7 @@ import Card from "@/components/Card";
 import ArticleEntry from "@/components/ArticleEntry";
 import React, { CSSProperties, useState } from "react";
 
-export enum ColorTheme {
+enum ColorTheme {
   BlackAndWhite = "BlackAndWhite",
 }
 
@@ -129,7 +129,7 @@ const websiteConfig = {
   ],
 };
 
-export const ColorThemeConfig = {
+const ColorThemeConfig = {
   [ColorTheme.BlackAndWhite]: {
     sectionOneTheme: {
       className: "bg-gradient-to-b from-black to-[#141414]",
@@ -265,7 +265,7 @@ export default function Home() {
         desc={sectionTwo.desc}
         // subTitle={sectionTwo.subTitle}
       >
-        <ArticleEntry articles={cardList} switchTimer={3000}></ArticleEntry>
+        <ArticleEntry articles={cardList as any} switchTimer={3000}></ArticleEntry>
       </Section>
       <Footer
         className={clsx(

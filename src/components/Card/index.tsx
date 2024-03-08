@@ -4,8 +4,8 @@ import React from "react";
 // 定义接口
 export interface IImageItem {
   src: string;
-  height: string;
-  width: string;
+  height: string | number;
+  width: string | number;
 }
 
 export interface ICardProps {

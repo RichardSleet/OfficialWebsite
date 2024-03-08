@@ -3,7 +3,7 @@ import { FC, useState } from "react";
 export interface IMenuItem {
     text: string;
     href?: string;
-    // children?: IMenuItem[];
+    children?: IMenuItem[];
 }
 
 export interface IDropdownMenuProps {
