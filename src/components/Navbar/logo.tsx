@@ -18,7 +18,7 @@ export const Logo: FC<ILogoProps> = (props) => {
     setLocalStyleState(imgStyle);
   }, [imgStyle]);
   return (
-    <div className={`flex items-center justify-center overflow-hidden ${className}`}>
+    <div className={`flex items-center justify-start overflow-hidden ${className}`}>
       <img
         style={localStyleState}
         className="object-contain"
